@@ -7,6 +7,7 @@ def evaluate(model, data_loader, criterion, device="cuda:0"):
     total_correct = 0
     total_loss = 0.0
     total = 0
+    
     with torch.no_grad():
         data_tqdm = tqdm(data_loader, leave=True)
         for idx, batch in enumerate(data_tqdm):
@@ -18,6 +19,6 @@ def evaluate(model, data_loader, criterion, device="cuda:0"):
             _, predictions = torch.max(logits, 1)
             total += labels.size(0)
             total_correct += (predictions==labels).sum().item()
-            data_tqdm.set_postfix(loss=loss.item(), accuracy=(predictions==labels).sum().item())
+            data_tqdm.set_postfix(loss=loss.item(), accuracy=(predictions==labels).sum().item()/labels.size(0))
     accuracy = total_correct/total
     return accuracy, total_loss
